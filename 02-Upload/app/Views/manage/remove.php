@@ -1,0 +1,5 @@
+<?= $this->extend('layouts/app') ?>
+<?= $this->section('content') ?>
+<div class="page-heading compact"><a class="text-link" href="<?= site_url($resource) ?>">&larr; <?= esc($spec['title']) ?></a><h1><?= esc($title) ?></h1><p class="lead"><?= esc($row['name'] ?? $row['full_name']) ?></p></div>
+<section class="card remove-card"><h2>Confirm removal</h2><p>Products are archived. Customer and staff records that appear in sales are also archived. Unused customer or staff records are permanently deleted.</p><p>Sales history remains available. Your own signed-in staff account cannot be removed here.</p><form method="POST" action="<?= site_url($resource.'/'.$row['id'].'/delete') ?>"><?= csrf_field() ?><label class="check-label"><input type="checkbox" name="confirm_remove" value="1" required> I confirm that I want to remove this record.</label><div class="form-actions"><button class="button danger-button">Confirm removal</button><a class="button secondary" href="<?= site_url($resource) ?>">Cancel</a></div></form></section>
+<?= $this->endSection() ?>

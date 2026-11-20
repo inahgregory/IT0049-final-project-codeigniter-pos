@@ -1,0 +1,144 @@
+CODEIGNITER MIDTERM PROJECT AND SCREENSHOT GUIDE
+
+LOCAL PROJECT
+C:\Users\inah\Documents\ChatGPT\Solar US\codeigniter-pos-midterm
+
+FULL GITHUB SOURCE FOLDER
+C:\Users\inah\Documents\ChatGPT\Solar US\Midterm-GitHub-Upload
+
+SMALLER GITHUB BATCHES
+C:\Users\inah\Documents\ChatGPT\Solar US\Midterm-GitHub-Batches
+
+REPOSITORY NAME
+it0049-midterm-codeigniter-pos
+
+OPEN POWERSHELL
+Set-Location -LiteralPath 'C:\Users\inah\Documents\ChatGPT\Solar US\codeigniter-pos-midterm'
+
+START SERVER IF NOT ALREADY RUNNING
+.\run-local.cmd php spark serve --host 127.0.0.1 --port 8010
+
+Use spaces before the host/port values, as shown.
+Open http://127.0.0.1:8010/setup.
+Choose your own first staff username, full name, and password.
+Login uses USERNAME, not email. No default password is supplied.
+The first-staff setup page closes after the first account exists.
+
+RECOMMENDED DOCUMENTATION SCREENSHOTS
+The activity does not prescribe a screenshot count. Use these as evidence.
+
+1. FIRST STAFF SETUP AND LOGIN
+Capture the setup/login forms without exposing your password.
+After login, capture the dashboard with product/customer/sales counts.
+Caption: Staff authentication protects the POS workspace.
+
+2. LOGGED-OUT ACCESS CONTROL
+Click Log out. Visit /products or /sales/create.
+Capture the redirect to /login. Then log back in.
+Caption: Only authenticated staff can access management pages.
+Optional PowerShell proof:
+curl.exe -s -D - -o NUL http://127.0.0.1:8010/products | Select-String '^(HTTP/|Location:)'
+
+3. PRODUCT MANAGEMENT
+Add a fictional product, for example:
+Name: Demo Pencil Case
+Price: 99.50
+Stock quantity: 10
+Choose a JPEG/PNG/WebP product picture under 2 MB.
+Capture the form and the product list showing the prepared image.
+Edit its price or stock and capture the updated row.
+Caption: Product CRUD validates prices and stock and prepares a display-ready image.
+
+4. CUSTOMER MANAGEMENT
+Add Demo Customer with demo.customer@example.com and a fictional phone.
+Capture its saved row and prefilled edit form.
+For server validation, use an invalid email through the automated tests,
+or use a blank required field to show browser validation.
+Caption: Customer information can be created, validated, and updated.
+
+5. STAFF MANAGEMENT AND AVATAR
+Create a second fictional staff account, for example demo.staff.
+Choose a full name, your own password, and a JPEG/PNG/WebP avatar under 2 MB.
+Capture the staff list showing the prepared avatar.
+Edit that record, leaving password blank to retain its current password.
+Caption: Staff accounts use hashed passwords and prepared avatar images.
+
+6. SUCCESSFUL SALE
+Before recording the first sale, capture the product's stock in /products.
+Initial seeded Classic Notebook: PHP 85.50, stock 30.
+Open Record Sale:
+Product: Classic Notebook
+Customer: Ana Reyes (or Walk-in to demonstrate optional customer)
+Quantity: 2
+Submit and capture its receipt.
+Expected initial total: PHP 171.00.
+Return to Products and capture stock reduced from 30 to 28.
+Caption: Recording a sale stores the transaction and reduces inventory atomically.
+If you have already sold this product, compare your actual before/after stock.
+
+7. OVERSELLING REJECTION
+Open Record Sale for Classic Notebook and request a quantity ABOVE its
+current available stock, for example 999.
+Submit and capture the clear insufficient-stock message.
+Capture inventory again to show that the failed sale did not change stock.
+Caption: Sales exceeding available inventory are rejected without recording a transaction.
+
+8. SALES HISTORY
+Open /sales and capture product, customer or Walk-in, staff, quantity,
+total, and date.
+Open the sale number to show its receipt.
+Caption: Sales History preserves the complete transaction details.
+
+9. REMOVE AND ARCHIVE
+Use a fictional disposable customer with no sales to demonstrate deletion.
+Use a product to demonstrate archiving: Remove -> confirmation -> confirm.
+The product should move to its Archived records tab.
+Removing customer/staff records referenced by sales archives them instead.
+Do not remove your signed-in staff account.
+Caption: Removal preserves records needed by transaction history.
+
+10. FILE VALIDATION (OPTIONAL ADDITIONAL EVIDENCE)
+On a product or staff form select a .txt file, or an image over 2 MB,
+and submit. Capture the error message.
+Choose the picture again after any validation error.
+Caption: Uploaded files are validated before image preparation and storage.
+
+11. POWERSHELL VERIFICATION
+Open a second PowerShell window in the project folder:
+.\run-local.cmd php spark migrate:status
+.\run-local.cmd php spark routes
+.\run-local.cmd php spark pos:summary
+.\run-local.cmd php vendor/bin/phpunit
+
+Capture the migration, protected route filters, inventory summary,
+and passing tests.
+
+ADDITIONAL CODE EVIDENCE IF REQUESTED
+- app/Database/Migrations/2026-11-21-000001_CreatePosTables.php
+- app/Libraries/SaleRecorder.php (transaction and conditional stock update)
+- app/Libraries/ImageStore.php (prepared uploads)
+- app/Filters/StaffAuth.php and app/Config/Filters.php
+- model allowedFields and the validated forms
+- Auth controller's password hashing/verification and session regeneration
+
+GITHUB UPLOAD
+Create repository it0049-midterm-codeigniter-pos.
+Open Midterm-GitHub-Batches and upload the CONTENTS of the first numbered
+folder, then commit. Repeat for every numbered folder in order, always
+using the SAME repository.
+Do not upload the numbered folders themselves.
+Several batches may each contain an app folder; their contents combine
+under the same app path in the repository.
+Include hidden files such as .gitignore and .env.example.
+
+The full Midterm-GitHub-Upload folder contains the same source if using Git.
+
+SUBMISSION
+Include the actual repository URL and hosted working HTTPS URL after deployment.
+Localhost is for documentation and does not replace a hosted link.
+
+Use a wide browser window and Win+Shift+S.
+Do not screenshot passwords, .env, database credentials, app secrets,
+session cookies, or private hosting settings.
+Do not upload the local database, runtime images, logs, sessions, or vendor.
+
